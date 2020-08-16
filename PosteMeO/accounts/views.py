@@ -7,7 +7,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer
+from .serializers import UserSerializer, RegisterSerializer
 
 
 # TODO: 
@@ -49,11 +49,11 @@ class UserRegisterAPI(APIView):
         IsAdminUser
     ]
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
             return Response({
-                "user": serializer.data,
+                "user": UserSerializer(user).data,
                 "token": ""
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
