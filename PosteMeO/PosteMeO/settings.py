@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -136,12 +137,16 @@ STATIC_ROOT = BASE_DIR.joinpath('assets')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication'
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ]
+}
+
+# Rest Framework JWT
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_VERIFY_EXPIRATION': True, 
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
 }
 
 
