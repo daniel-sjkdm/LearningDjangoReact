@@ -37,9 +37,10 @@ Concepts used:
 
 Features:
 
-- [ ] Create a django project with: accounts and posts as apps
+- [x] Create a django project with: accounts and posts as apps
 - [ ] Create a react project called frontend 
-- [ ] Create serializers.py file for each app and code the api in api.py: p
+- [x] Create serializers.py file for each app 
+- [ ] Configure defaults of REST_FRAMEWORK and JWT in settings.py
 - [ ] Create a jwt token for each registered user
 - [ ] Create react components: postList, post, postForm, navigation, login, register
 - [ ] Create the needed routes using _react-router-dom_
