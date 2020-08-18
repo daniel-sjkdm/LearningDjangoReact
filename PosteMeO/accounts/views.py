@@ -8,10 +8,17 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer, RegisterSerializer
+from rest_framework_jwt.settings import api_settings
 
 
 # TODO: 
-# - [ ] Add JWT authentication
+# - [x] Add JWT authentication
+
+
+def getJWTCreds(user):
+    payload = api_settings.JWT_PAYLOAD_HANDLER(user)
+    return api_settings.JWT_ENCODE_HANDLER(payload)
+
 
 
 class UserAPI(APIView):
@@ -23,11 +30,7 @@ class UserAPI(APIView):
 
 class UserDetailAPI(APIView):
     authentication_classes = [
-        BasicAuthentication
-    ]
-    permission_classes = [
-        IsAuthenticated, 
-        IsAdminUser
+        JSONWebTokenAuthentication
     ]
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
@@ -42,19 +45,18 @@ class UserDetailAPI(APIView):
 
 class UserRegisterAPI(APIView):
     authentication_classes = [
-        BasicAuthentication
+        JSONWebTokenAuthentication
     ]
-    permission_classes = [
-        IsAuthenticated,
-        IsAdminUser
-    ]
+    # permission_classes = [
+    #     IsAdminUser
+    # ]
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             return Response({
                 "user": UserSerializer(user).data,
-                "token": ""
+                "token": getJWTCreds(user)
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -70,6 +72,6 @@ class UserLoginAPI(APIView):
         if user is not None:
             return Response({
                 "user": UserSerializer(user).data,
-                "token": ""
+                "token": getJWTCreds(user)
             }, status=status.HTTP_200_OK)
         return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
