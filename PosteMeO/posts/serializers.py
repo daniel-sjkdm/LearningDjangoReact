@@ -15,6 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
     word_count = serializers.IntegerField(read_only=False, required=False, default=0)
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     liked_by = serializers.SlugRelatedField(slug_field='username', many=True, read_only=True)
+    created = serializers.DateTimeField(format="%d/%m/%y_%H:%M:%S")
     # This is another way to do the same, but not convenient since it fetchs all
     # the serializer declared fields
     # author = UserSerializer()
@@ -31,6 +32,7 @@ class PostSerializer(serializers.ModelSerializer):
             'word_count',
             'created',
         ]
+        sorted = ['created']
         # When there isn't a relational field declared, you can
         # specify the depth of the model's fields to be  1 or more
         # depth = 1
