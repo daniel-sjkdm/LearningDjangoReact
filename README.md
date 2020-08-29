@@ -21,28 +21,32 @@ Used as frontend since it's the best framework and its approach to design by usi
 
 Libraries used:
 + axios
-+ material ui
-+ react router
-+ react hook form
++ @material-ui
++ react-router-dom
++ react-hook-form
 
 Concepts used:
 + Functional components
-+ Hooks
++ Hooks:
+  + useState
+  + useReducer
+  + useEffect
+  + useRef
 + Context API
 + Lift state up
 + Controlled and uncontrolled components (forms)
-+ Requests with axios
++ Http requests with axios
 
  
 
 Features:
 
 - [x] Create a django project with: accounts and posts as apps
-- [ ] Create a react project called frontend 
+- [x] Create a react project called frontend 
 - [x] Create serializers.py file for each app 
-- [ ] Configure defaults of REST_FRAMEWORK and JWT in settings.py
-- [ ] Create a jwt token for each registered user
-- [ ] Create react components: postList, post, postForm, navigation, login, register
+- [x] Configure defaults of REST_FRAMEWORK and JWT in settings.py
+- [x] Create a jwt token for each registered user
+- [x] Create react components: postList, post, postForm, navigation, login, register
 - [ ] Create the needed routes using _react-router-dom_
-- [ ] Perform form validation
+- [x] Perform form validation
 - [ ] Add login features
