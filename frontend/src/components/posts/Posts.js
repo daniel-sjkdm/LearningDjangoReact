@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Post from './Post';
+import PostForm from './PostForm';
 import axios from 'axios';
 import { 
     Route,
     Switch,
     Link,
-    useRouteMatch } from 'react-router-dom';
- 
+    useRouteMatch,
+    Redirect } from 'react-router-dom';
+import {
+    Button,
+    Grid,
+} from '@material-ui/core';
+import {
+    Pagination 
+} from '@material-ui/lab';
+import {
+    makeStyles
+} from '@material-ui/core/styles';
+
 
 /* 
     Sample output of match object (when console.log(match)):
@@ -22,6 +34,10 @@ import {
         * url: doesn't end with slash / if you registered it this way, you can append 
             more urls inside <Link to={`${match.url}/:id/`} />
 */
+
+const styles = makeStyles({
+    
+});
 
 
 const Posts = (props) => {
@@ -41,16 +57,28 @@ const Posts = (props) => {
         console.log("Match from Posts component = ", match)
     }, [])
 
-    return (
+    return ( 
         <div>
             <h3> Post List (Father!) </h3>
-            {
-                posts.map((post) => (
-                    <Link key={post.id} to={`${match.url}/${post.id}`}>
-                        <p> {post.title} </p>
-                    </Link>
-                ))
-            }
+            <Grid container spacing={3}>
+                {
+                    posts.map((post) => (
+                        <Grid item key={post.id} item xs={12} sm={6} xl={4}>
+                            <Post  id={post.id} title={post.title} body={post.body}/>
+                            <Link to={`${match.url}/${post.id}`}>
+                                <p> {post.title} </p>
+                            </Link>
+                        </Grid>
+                    ))
+                }
+            </Grid>
+            <Pagination count={5} />
+            <Link to={`${match.url}/create`}>
+                <Button variant="outlined" color="primary"> Create Post </Button>
+            </Link>
+            <Switch>
+                <Route exact path={`${match.path}/create`} component={PostForm} />
+            </Switch>
         </div>
     )
 }

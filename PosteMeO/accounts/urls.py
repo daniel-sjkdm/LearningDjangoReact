@@ -13,3 +13,10 @@ urlpatterns = [
     path('api/jwt_token/refresh/', refresh_jwt_token, name='jwt-refresh'),
     path('api/jwt_token/verify/', verify_jwt_token, name='jwt-verify'),
 ]
+
+'''
+
+http -f post http://localhost:8000/accounts/login/ username='tyler' password='hello world'
+
+
+'''

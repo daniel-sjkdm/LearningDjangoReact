@@ -4,13 +4,39 @@ import {
     useParams,
     useRouteMatch
 } from 'react-router-dom';
+import {
+    Grid, 
+    Paper,
+    Card,
+    CardHeader,
+    CardContent,
+    CardActions,
+    Typography,
+    Button,
+    IconButton
+} from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {
+    makeStyles 
+} from '@material-ui/core/styles';
 
 
-const Post = () => {
+const styles = makeStyles({
+    postCard: {
+        height: '250px',
+    },
+    postTitle: {
+        textAlign: 'center',
+    } 
+});
+
+
+const Post = ({id, title, body}) => {
     // Instead of match.params.id
     // extract the if by deconstructing useParams()
     const match = useRouteMatch();
     const [post, setPost] = useState({});
+    const classes = styles();
     
     const fetchPost = async () => {
         const request = await axios.get(`https://jsonplaceholder.typicode.com/posts/${match.params.id}`);
@@ -21,20 +47,45 @@ const Post = () => {
             const post_data = request.data;
             console.log(post_data)
             setPost(post_data)
-        }        
+        }       
     }
-
-    useEffect(() => {
-        console.log(match)
-        fetchPost();
-    }, [])
 
     return (
         <div>
-            <h3> Post (Children!) </h3>
-            {
-                <p> {post.title} </p>
-            }
+            <Card className={classes.postCard}>
+                <CardHeader 
+                    disableTypography
+                    title={
+                        <Typography 
+                            align="center" 
+                            variant="h6" 
+                            component="p"
+                            color="primary"> 
+                            { title }
+                        </Typography>
+                    }
+                /> 
+                <CardContent>
+                    <Typography 
+                        variant="body2" 
+                        component="p"
+                        overflow="auto"
+                    >
+                        { body }
+                    </Typography>
+                </CardContent>
+                <hr/>
+                <CardActions disableSpacing={false}>
+                    <IconButton 
+                        onClick={(e)=> {console.log("Event IconButton -> ", e)}}
+                        disabled={false}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                    <Button variant="outlined" color="primary"> Detail  </Button>
+                    <Button variant="outlined" color="primary"> Edit  </Button>
+                </CardActions>
+            </Card>
         </div>
     )
 }
